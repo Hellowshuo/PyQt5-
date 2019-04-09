@@ -13,6 +13,7 @@ class MyWin(QWidget,Ui_Form):
         self.mythread.signal.connect(self.callback) #设置任务线程发射信号触发的函数
 
     def test(self): # 这里test就是槽函数, 当点击按钮时执行 test 函数中的内容, 注意有一个参数为 self
+        self.mythread.data = 5 # 这句就是给线程的实例化一个属性给其赋值，在线程里面就可以调用了
         self.mythread.start() # 启动任务线程
 
     def callback(self,i): # 这里的 i 就是任务线程传回的数据
@@ -24,9 +25,7 @@ class MyThread(QThread): # 建立一个任务线程类
         super(MyThread, self).__init__()
 
     def run(self): # 在启动线程后任务从这个函数里面开始执行
-        for i in range(10):
-            self.signal.emit(str(i)) #任务线程发射信号用于与图形化界面进行交互
-            time.sleep(1)
+        print(self.data) # 调用传递过来的数据
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
